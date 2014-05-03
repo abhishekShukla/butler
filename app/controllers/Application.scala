@@ -9,12 +9,13 @@ import service.MyUserService
 object Application extends Controller with securesocial.core.SecureSocial {
 
 	val logger = Logger("application.controllers.Application")
-			def index = SecuredAction { implicit request =>
-			logger.warn("logging from application")
-			Ok(views.html.index(request.user))
+
+    def index = SecuredAction { implicit request =>
+        logger.warn("logging from application")
+        Ok(views.html.index(request.user))
 	}
 
-	// a sample action using the new authorization hook
+// a sample action using the new authorization hook
 	def onlyTwitter = SecuredAction(WithProvider("twitter")) { implicit request =>
 		val logger = Logger("application.controllers.Application.onlyTwitter")
 		logger.error("only twitter")
