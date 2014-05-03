@@ -16,6 +16,10 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /login                      securesocial.controllers.LoginPage.login
 GET     /logout                     securesocial.controllers.LoginPage.logout
 
+# OAuth to Evernote
+GET     /evernote/authenticate               controllers.Integration.everAuth
+GET     /evernote/auth                       controllers.Integration.everAuth
+
 # User Registration and password handling 
 GET     /signup                     securesocial.controllers.Registration.startSignUp
 POST    /signup                     securesocial.controllers.Registration.handleStartSignUp

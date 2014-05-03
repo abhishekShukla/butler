@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   "ws.securesocial" %% "securesocial" % "master-SNAPSHOT",
   "org.squeryl" % "squeryl_2.10" % "0.9.5-6",
   "mysql" % "mysql-connector-java" % "5.1.27",
-  "org.scalatest" %% "scalatest" % "2.1.0" % "test"
+  "org.scalatest" %% "scalatest" % "2.1.0" % "test",
+  "com.evernote" % "evernote-api" % "1.25.1"
 )     
              
 
