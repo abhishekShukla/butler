@@ -20,7 +20,7 @@ GET     /logout                     securesocial.controllers.LoginPage.logout
 GET     /evernote/authenticate               controllers.Integration.everAuth
 GET     /evernote/auth                       controllers.Integration.everAuth
 
-# User Registration and password handling 
+# User Registration and password handling
 GET     /signup                     securesocial.controllers.Registration.startSignUp
 POST    /signup                     securesocial.controllers.Registration.handleStartSignUp
 GET     /signup/:token              securesocial.controllers.Registration.signUp(token)

@@ -16,16 +16,16 @@ import scala.collection.JavaConversions._
 object Integration extends Controller{
 
 	val KEY = ConsumerKey("YOUR CONSUMER KEY", "YOUR CONSUMER SECRET")
-	
+
 	val EVERNOTE = OAuth(ServiceInfo(
     "https://sandbox.evernote.com/oauth",
     "https://sandbox.evernote.com/oauth",
     "https://sandbox.evernote.com/OAuth.action", KEY),
     false)
-    
+
      val CALLBACK_URL = "http://localhost:9000/auth"
      val USER_STORE_URL = "https://sandbox.evernote.com/edam/user"
-   
+
     def everAuth = Action { request =>
     	request.queryString.get("oauth_verifier").flatMap(_.headOption).map { verifier =>
     	val tokenPair = sessionTokenPair(request).get
