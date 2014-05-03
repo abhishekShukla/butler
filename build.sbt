@@ -1,4 +1,4 @@
-name := "loginTemplate"
+name := "butler"
 
 version := "1.0-SNAPSHOT"
 
