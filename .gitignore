@@ -17,3 +17,4 @@ conf/securesocial.conf
 bin/*
 .cache
 .target/*
+tags/*
