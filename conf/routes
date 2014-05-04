@@ -19,6 +19,7 @@ GET     /logout                     securesocial.controllers.LoginPage.logout
 # OAuth to Evernote
 GET     /evernote/authenticate               controllers.Integration.everAuth
 GET     /evernote/auth                       controllers.Integration.everAuth
+GET  	/evernote						controllers.Integration.evernote
 
 # User Registration and password handling 
 GET     /signup                     securesocial.controllers.Registration.startSignUp

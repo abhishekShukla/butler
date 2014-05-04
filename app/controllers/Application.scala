@@ -5,6 +5,7 @@ import play.api.mvc._
 import securesocial.core.{IdentityId, UserService, Identity, Authorization}
 import play.api.{Logger, Play}
 import service.MyUserService
+import views._
 
 object Application extends Controller with securesocial.core.SecureSocial {
 
@@ -14,7 +15,7 @@ object Application extends Controller with securesocial.core.SecureSocial {
         logger.warn("logging from application")
         Ok(views.html.index(request.user))
 	}
-
+	
 // a sample action using the new authorization hook
 	def onlyTwitter = SecuredAction(WithProvider("twitter")) { implicit request =>
 		val logger = Logger("application.controllers.Application.onlyTwitter")
