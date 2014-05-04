@@ -32,22 +32,29 @@ object PocketIntegration extends Controller {
      implicit val authResponseFormat = jsonFormat2(AuthResponse.apply)
     }
 
-    object PocketAuth {
+    val consumerKey = ""
+    val CALLBACK_URI = "http://localhost:9000/"
+
      import PocketJsonProtocol._
      val JsonHeaders = Map("X-Accept" -> "application/json", "Content-Type" -> "application/json; charset=UTF-8")
      implicit val EC = ExecutionContext.fromExecutor(Executors.newCachedThreadPool())
 
-     def authenticate(consumerKey:String, userId:String) = {
-       val fut = for{
-         codeResp <- requestCode(consumerKey)
-         _ <- activateToken(codeResp, userId)
-         authResp <- requestAuth(consumerKey, codeResp)
-       } yield{
-         JsonParser(authResp).convertTo[AuthResponse]
-       }
+     def authenticate = Action { request =>
 
-       val auth = Await.result(fut, 5 seconds)
-       auth.access_token
+           val fut = for{
+             codeResp <- requestCode(consumerKey)
+             _ <- activateToken(codeResp)
+             authResp <- requestAuth(consumerKey, codeResp)
+           } yield{
+             JsonParser(authResp).convertTo[AuthResponse]
+           }
+
+           // TODO: Save token to DB
+           val auth = Await.result(fut, 5 seconds)
+           print (auth.access_token)
+           Redirect(routes.PocketIntegration.pocket).withSession(
+            "token" -> auth.access_token
+          )
      }
 
      def requestCode(key:String) = {
@@ -55,9 +62,9 @@ object PocketIntegration extends Controller {
        Http(req.POST OK as.String).map(JsonParser(_).convertTo[CodeResponse])
      }
 
-     def activateToken(codeResp:CodeResponse, userId:String) = {
-       val req = (url("https://getpocket.com/auth/authorize") <<? Map("request_token" -> codeResp.code, "redirect_uri" -> "foo")).addCookie(
-         new Cookie(".getpocket.com", "sess_user_id", userId, "/", 100, false))
+     def activateToken(codeResp:CodeResponse) = {
+       val req = (url("https://getpocket.com/auth/authorize") <<?
+      		 	  Map("request_token" -> codeResp.code, "redirect_uri" -> CALLBACK_URI))
        Http(req)
      }
 
@@ -65,6 +72,11 @@ object PocketIntegration extends Controller {
        val req = url("https://getpocket.com/v3/oauth/authorize") <:< JsonHeaders << AuthRequest(key, codeResp.code).toJson.toString
        Http(req.POST OK as.String)
      }
+     
+     def pocket = Action { implicit request =>	
+             Ok(views.html.pocket()).withSession(session)
+    	}
 
-    }
+
+
 }
